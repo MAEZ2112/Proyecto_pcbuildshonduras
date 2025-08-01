@@ -64,6 +64,30 @@ class Checkout extends PrivateController
                 $orderItemData["id_producto"] = $producto["id_producto"];
                 $orderItemData["cantidad"] = $producto["crrctd"];
                 $orderItemData["precio"] = $producto["crrprc"];
+                \Dao\Orders\OrderItems::insertOrderItem($orderItemData);
+            }
+
+            
+
+            $orderData = [];
+            $orderData["usercod"] = Security::getUserId();
+            $orderData["order_status"] = "PENDING"; 
+            $orderData["shipping_status"] = "Tomando Orden"; 
+            $orderData["total"] = Cart::getTotalCart(Security::getUserId());
+            $orderData["currency"] = "USD";
+            $orderData["orderdate"] = date("Y-m-d H:i:s");
+
+
+            //Aqui debo guardar la orden en la base de datos
+            $orderId = \Dao\Orders\Orders::insertOrder($orderData);
+
+            //Insertar cada item del Carrito en la tabla de ordenes_detalle
+            foreach ($carretilla as $producto) {
+                $orderItemData = [];
+                $orderItemData["orderid"] = $orderId;
+                $orderItemData["id_producto"] = $producto["id_producto"];
+                $orderItemData["cantidad"] = $producto["crrctd"];
+                $orderItemData["precio"] = $producto["crrprc"];
 
                 \Dao\Orders\OrderItems::insertOrderItem($orderItemData);
             }
