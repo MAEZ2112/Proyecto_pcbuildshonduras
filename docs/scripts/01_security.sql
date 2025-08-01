@@ -85,6 +85,13 @@ INSERT INTO funciones (fncod, fndsc, fnest, fntyp) VALUES
 ('Controllers\\Admin\\Marcas\\Marcas\\delete', 'Permiso para eliminar marcas', 'ACT', 'FNC'),
 ('Controllers\\Admin\\Marcas\\Marcas\\new', 'Permiso para crear nuevas marcas', 'ACT', 'FNC'),
 ('Controllers\\Admin\\Marcas\\Marcas\\update', 'Permiso para editar marcas', 'ACT', 'FNC'),
+('Controllers\\Admin\\Orders\\Pedidos', 'Manejo de Pedidos', 'ACT', 'CTR'),
+('Controllers\\Admin\\Orders\\Pedido', 'Manejo de Pedidos', 'ACT', 'CTR'),
+('Controllers\\Admin\\Orders\\Envios', 'Manejo de Envios', 'ACT', 'CTR'),
+('Controllers\\Admin\\Orders\\Envio', 'Manejo de Envios', 'ACT', 'CTR'),
+('Menu_Admin_Pedidos', 'Menu_Pedidos', 'ACT', 'MNU'),
+('Menu_Admin_Envios', 'Menu_Envios', 'ACT', 'MNU'),
+('Controllers\\Admin\\Orders\\TransHist', 'Histórico de Transacciones', 'ACT', 'CTR'),
 ('Controllers\\Admin\\Products\\Product', 'Acceso al controlador de producto', 'ACT', 'CTR'),
 ('Controllers\\Admin\\Products\\Products', 'Acceso general a productos', 'ACT', 'CTR'),
 ('Controllers\\Admin\\Products\\Products\\delete', 'Permiso para eliminar productos', 'ACT', 'FNC'),
@@ -120,6 +127,8 @@ INSERT INTO funciones (fncod, fndsc, fnest, fntyp) VALUES
 ('Menu_Admin_Usuarios', 'Entrada del menú para administrar usuarios', 'ACT', 'MNU'),
 ('Menu_OrdersHist', 'Entrada del menú para historial de pedidos', 'ACT', 'MNU'),
 ('Menu_PaymentCheckout', 'Entrada del menú para checkout de pagos', 'ACT', 'MNU'),
+('Menu_Admin_Envios', 'Manejo de Envios', 'ACT', 'MENU'),
+('Menu_Admin_Pedidos', 'Manejo de Pedidos', 'ACT', 'MENU'),
 ('Menu_TransHist', 'Entrada del menú para historial de transacciones', 'ACT', 'MNU');
 
 INSERT INTO
@@ -160,6 +169,10 @@ INSERT INTO funciones_roles (rolescod, fncod, fnrolest, fnexp) VALUES
 ('ADMIN', 'Controllers\\Admin\\Marcas\\Marcas\\delete', 'ACT', '2025-10-10 00:00:00'),
 ('ADMIN', 'Controllers\\Admin\\Marcas\\Marcas\\new', 'ACT', '2025-10-10 00:00:00'),
 ('ADMIN', 'Controllers\\Admin\\Marcas\\Marcas\\update', 'ACT', '2025-10-10 00:00:00'),
+('ADMIN', 'Controllers\\Admin\\Orders\\Envio', 'ACT', '2026-07-27 00:00:00'),
+('ADMIN', 'Controllers\\Admin\\Orders\\Envios', 'ACT', '2026-07-27 00:00:00'),
+('ADMIN', 'Controllers\\Admin\\Orders\\Pedido', 'ACT', '2026-07-27 00:00:00'),
+('ADMIN', 'Controllers\\Admin\\Orders\\Pedidos', 'ACT', '2026-07-27 00:00:00'),
 ('ADMIN', 'Controllers\\Admin\\Products\\Product', 'ACT', '2025-10-10 00:00:00'),
 ('ADMIN', 'Controllers\\Admin\\Products\\Products', 'ACT', '2025-10-10 00:00:00'),
 ('ADMIN', 'Controllers\\Admin\\Products\\Products\\delete', 'ACT', '2025-10-10 00:00:00'),
@@ -189,6 +202,11 @@ INSERT INTO funciones_roles (rolescod, fncod, fnrolest, fnexp) VALUES
 ('ADMIN', 'Menu_Admin_Roles', 'ACT', '2025-10-10 00:00:00'),
 ('ADMIN', 'Menu_Admin_RolesUsuario', 'ACT', '2025-10-10 00:00:00'),
 ('ADMIN', 'Menu_Admin_Usuarios', 'ACT', '2025-10-10 00:00:00'),
+('ADMIN', 'Menu_Admin_Envios', 'ACT', '2025-10-10 00:00:00'),
+('ADMIN', 'Menu_Admin_Pedidos', 'ACT', '2025-10-10 00:00:00'),
+('ADMIN', 'Menu_TransHist', 'ACT', '2025-10-10 00:00:00'),
+
+('PBL', 'Controllers\\Checkout\\Checkout', 'ACT', '2026-07-27 03:14:24'),
 ('PBL', 'Controllers\\Checkout\\History', 'ACT', '2026-07-27 03:14:24'),
 ('PBL', 'Controllers\\Checkout\\HistoryDetail', 'ACT', '2026-07-27 03:14:24'),
 ('PBL', 'Controllers\\Checkout\\Checkout', 'ACT', '2026-07-27 03:14:24');
