@@ -70,7 +70,9 @@
         <option value="BLQ" {{userest_BLQ}}>Bloqueado</option>
       </select>
     </div>
-
+<div class="col-12 warning" style="color: #d9534f; font-weight: bold; background-color: #f9e6e6; padding: 10px; border-radius: 5px;">
+Cambiar el tipo de usuario no afecta los permisos. Asigná roles desde el módulo de Gestión de roles por usuario.
+</div>
     <!-- Botones -->
     <div class="row my-4 align-center flex-end">
       {{if showCommitBtn}}

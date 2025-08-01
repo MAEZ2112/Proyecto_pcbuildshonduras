@@ -76,7 +76,10 @@ class RolUsuario extends PrivateController
             $this->viewData["rolescod"] = $_GET["rolescod"];
             $this->viewData["usercod"] = $_GET["usercod"];
         }
-    }
+
+       $this->viewData["rolescodActual"] = $_GET["rolescod"] ?? '';
+        $this->viewData["rolescod"] = $_GET["rolescod"] ?? '';
+  }
 
     private function getDataFromDB(): void
     {
@@ -118,7 +121,9 @@ class RolUsuario extends PrivateController
             $user = Usuarios::getUsuarioById((int)$this->viewData["usercod"]);
             $this->viewData["username"] = $user["username"] ?? "";
         }
-       
+       if (isset($_POST["rolescod"]) && $_POST["rolescod"] !== "") {
+    $this->viewData["rolescodNuevo"] = $_POST["rolescod"];
+}
     }
 
     private function validateData(): bool
@@ -155,9 +160,14 @@ class RolUsuario extends PrivateController
                 $msg = $ok > 0 ? "Rol asignado correctamente" : "No se pudo asignar";
                 break;
             case "UPD":
-                $ok = RolesUsuariosDAO::updateRolUsuario(
-                    $v["usercod"], $v["rolescod"], $v["roleuserest"], $v["roleuserfch"], $v["roleuserexp"]
-                );
+               $ok = RolesUsuariosDAO::cambiarRolUsuario(
+                $v["usercod"],
+                $v["rolescodActual"],   // rol actual
+                $v["rolescodNuevo"],    // rol nuevo desde el combo
+                $v["roleuserest"],
+                $v["roleuserfch"],
+                $v["roleuserexp"]
+            );
                 $msg = $ok > 0 ? "Asignación actualizada" : "No se pudo actualizar";
                 break;
             case "DEL":
@@ -181,7 +191,7 @@ class RolUsuario extends PrivateController
 
         $this->viewData["disabled"] = ($this->viewData["mode"] === "UPD") ? "disabled" : "";
 
-     // Cargar lista de usuarios
+     // Cargar lista de usuarios 
        $v["usuarios_list"] = array_map(function ($u) {
         $u["selected"] = ($u["usercod"] === $this->viewData["usercod"]) ? "selected" : "";
         return $u;
