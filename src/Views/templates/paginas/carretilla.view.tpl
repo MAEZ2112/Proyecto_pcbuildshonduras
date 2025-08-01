@@ -1,9 +1,7 @@
-
 <section class="container-l">
   <section class="depth-4">
     <i class="fa-solid fa-cart-plus"></i>
     <h1 class="title">Carretilla de Compras</h1>
-
   </section>
 
   <section class="grid">
@@ -24,15 +22,14 @@
       <span class="col-2 center">USD {{crrprc}}</span>
       <span class="col-3 center">
         <form action="index.php?page=Carretilla" method="post">
-        <div class="quantity-controls">
-          <input type="hidden" name="productId" value="{{id_producto}}" />
-          
-          <button type="submit" name="removeOne" value="1" class="circle">−</button>
-          <span class="quantity-value">{{crrctd}}</span>
-          <button type="submit" name="addOne" value="1" class="circle">+</button>
-        </div>
-      </form>
+          <div class="quantity-controls">
+            <input type="hidden" name="productId" value="{{id_producto}}" />
 
+            <button type="submit" name="removeOne" value="1" class="circle">−</button>
+            <span class="quantity-value">{{crrctd}}</span>
+            <button type="submit" name="addOne" value="1" class="circle">+</button>
+          </div>
+        </form>
       </span>
       <span class="col-2 center">USD {{subtotal}}</span>
     </div>
@@ -52,3 +49,27 @@
     </div>
   </section>
 </section>
+
+
+<div id="stock-message">{{cartMessage}}</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const stockMessage = document.getElementById("stock-message");
+    if (stockMessage && stockMessage.textContent.trim() !== "") {
+      stockMessage.style.display = "block";
+      stockMessage.style.opacity = "1"; // Asegurar opacidad inicial
+
+      setTimeout(() => {
+        stockMessage.style.opacity = "0";
+        setTimeout(() => {
+          stockMessage.style.display = "none";
+          stockMessage.textContent = "";  // Vaciar contenido
+        }, 500);
+      }, 3000);
+    } else if (stockMessage) {
+      stockMessage.style.display = "none";
+      stockMessage.textContent = "";
+    }
+  });
+</script>

@@ -24,52 +24,48 @@ class Carretilla extends PublicController
             : Cart::getAnonCart($userId);
 
         if ($this->isPostBack()) {
-            if (isset($_POST["removeOne"]) || isset($_POST["addOne"])) {
-                $productId = intval($_POST["productId"]);
-                $productoDisp = Cart::getProductoDisponible($productId);
-                $amount = isset($_POST["removeOne"]) ? -1 : 1;
+        if (isset($_POST["removeOne"]) || isset($_POST["addOne"])) {
+            $productId = intval($_POST["productId"]);
+            $productoDisp = Cart::getProductoDisponible($productId);
+            $amount = isset($_POST["removeOne"]) ? -1 : 1;
 
-                if ($amount === 1) {
-                    if ($productoDisp["stock"] - $amount >= 0) {
-                        if ($userIsLogged) {
-                            Cart::addToAuthCart(
-                                $productId,
-                                $userId,
-                                $amount,
-                                $productoDisp["precio"]
-                            );
-                        } else {
-                            Cart::addToAnonCart(
-                                $productId,
-                                $userId,
-                                $amount,
-                                $productoDisp["precio"]
-                            );
-                        }
-                    }
+            // Cantidad actual del producto en carrito
+            $carritoActual = $userIsLogged
+                ? Cart::getAuthCart($userId)
+                : Cart::getAnonCart($userId);
+
+            $item = array_filter($carritoActual, fn($i) => $i["id_producto"] == $productId);
+            $item = reset($item);
+            $cantidadActual = $item ? $item["crrctd"] : 0;
+
+            // Stock disponible del producto
+            $stockDisponible = intval($productoDisp["stock"]);
+
+            // Validación de stock
+            if ($amount === 1) {
+                if ($stockDisponible <= 0) {
+                    $_SESSION["cartMessage"] = "No puedes agregar más de $cantidadActual unidades. Stock disponible limitado.";
                 } else {
-                    // Siempre que se reste, simplemente llamamos a addToCart con -1
                     if ($userIsLogged) {
-                        Cart::addToAuthCart(
-                            $productId,
-                            $userId,
-                            $amount,
-                            $productoDisp["precio"]
-                        );
+                        Cart::addToAuthCart($productId, $userId, $amount, $productoDisp["precio"]);
                     } else {
-                        Cart::addToAnonCart(
-                            $productId,
-                            $userId,
-                            $amount,
-                            $productoDisp["precio"]
-                        );
+                        Cart::addToAnonCart($productId, $userId, $amount, $productoDisp["precio"]);
                     }
                 }
+            } else {
+                // Disminuir cantidad
+                if ($userIsLogged) {
+                    Cart::addToAuthCart($productId, $userId, $amount, $productoDisp["precio"]);
+                } else {
+                    Cart::addToAnonCart($productId, $userId, $amount, $productoDisp["precio"]);
+                }
+            }
 
-                // Refrescar carretilla
-                $carretilla = $userIsLogged
-                    ? Cart::getAuthCart($userId)
-                    : Cart::getAnonCart($userId);
+            // Refrescar carrito
+            $carretilla = $userIsLogged
+                ? Cart::getAuthCart($userId)
+                : Cart::getAnonCart($userId);
+
                 $this->getCartCounter();
             }
         }
@@ -100,6 +96,9 @@ class Carretilla extends PublicController
         $viewData["botonIcono"] = ($total > 0)
             ? "shopping-cart"
             : "store";
+
+        $viewData["cartMessage"] = $_SESSION["cartMessage"] ?? "";
+        unset($_SESSION["cartMessage"]); // para que solo aparezca una vez
 
         \Views\Renderer::render("paginas/carretilla", $viewData);
     }

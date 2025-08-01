@@ -54,49 +54,47 @@ class CartDAO extends \Dao\Table
     }
 
         public static function getProductoDisponible($productId)
-    {
-        $sqlAllProductosActivos = "SELECT * from producto where id_estado in ('1') and id_producto=:productId;";
-        $productosDisponibles = self::obtenerRegistros($sqlAllProductosActivos, array("productId" => $productId));
+{
+    $sqlAllProductosActivos = "SELECT * from producto where id_estado in ('1') and id_producto=:productId;";
+    $productosDisponibles = self::obtenerRegistros($sqlAllProductosActivos, array("productId" => $productId));
 
-        //Sacar el stock de productos con carretilla autorizada
-        $deltaAutorizada = \Utilities\Cart\CartFns::getAuthTimeDelta();
-        $sqlCarretillaAutorizada = "select id_producto, sum(crrctd) as reserved
-            from carretilla where id_producto=:productId and TIME_TO_SEC(TIMEDIFF(now(), crrfching)) <= :delta
-            group by id_producto;";
-        $prodsCarretillaAutorizada = self::obtenerRegistros(
-            $sqlCarretillaAutorizada,
-            array("productId" => $productId, "delta" => $deltaAutorizada)
-        );
-        //Sacar el stock de productos con carretilla no autorizada
-        $deltaNAutorizada = \Utilities\Cart\CartFns::getUnAuthTimeDelta();
-        $sqlCarretillaNAutorizada = "select id_producto, sum(crrctd) as reserved
-            from carretillaanon where id_producto = :productId and TIME_TO_SEC(TIMEDIFF(now(), crrfching)) <= :delta
-            group by id_producto;";
-        $prodsCarretillaNAutorizada = self::obtenerRegistros(
-            $sqlCarretillaNAutorizada,
-            array("productId" => $productId, "delta" => $deltaNAutorizada)
-        );
-        $productosCurados = array();
-        foreach ($productosDisponibles as $producto) {
-            if (!isset($productosCurados[$producto["id_producto"]])) {
-                $productosCurados[$producto["id_producto"]] = $producto;
-            }
+    $deltaAutorizada = \Utilities\Cart\CartFns::getAuthTimeDelta();
+    $sqlCarretillaAutorizada = "select id_producto, sum(crrctd) as reserved
+        from carretilla where id_producto=:productId and TIME_TO_SEC(TIMEDIFF(now(), crrfching)) <= :delta
+        group by id_producto;";
+    $prodsCarretillaAutorizada = self::obtenerRegistros(
+        $sqlCarretillaAutorizada,
+        array("productId" => $productId, "delta" => $deltaAutorizada)
+    );
+
+    $deltaNAutorizada = \Utilities\Cart\CartFns::getUnAuthTimeDelta();
+    $sqlCarretillaNAutorizada = "select id_producto, sum(crrctd) as reserved
+        from carretillaanon where id_producto = :productId and TIME_TO_SEC(TIMEDIFF(now(), crrfching)) <= :delta
+        group by id_producto;";
+    $prodsCarretillaNAutorizada = self::obtenerRegistros(
+        $sqlCarretillaNAutorizada,
+        array("productId" => $productId, "delta" => $deltaNAutorizada)
+    );
+
+    $productosCurados = array();
+    foreach ($productosDisponibles as $producto) {
+        if (!isset($productosCurados[$producto["id_producto"]])) {
+            $productosCurados[$producto["id_producto"]] = $producto;
         }
-        foreach ($prodsCarretillaAutorizada as $producto) {
-            if (isset($productosCurados[$producto["id_producto"]])) {
-                $productosCurados[$producto["id_producto"]]["productStock"] -= $producto["reserved"];
-            }
-        }
-        foreach ($prodsCarretillaNAutorizada as $producto) {
-            if (isset($productosCurados[$producto["id_producto"]])) {
-                $productosCurados[$producto["id_producto"]]["productStock"] -= $producto["reserved"];
-            }
-        }
-        $productosDisponibles = null;
-        $prodsCarretillaAutorizada = null;
-        $prodsCarretillaNAutorizada = null;
-        return $productosCurados[$productId];
     }
+    foreach ($prodsCarretillaAutorizada as $producto) {
+        if (isset($productosCurados[$producto["id_producto"]])) {
+            $productosCurados[$producto["id_producto"]]["stock"] -= $producto["reserved"];
+        }
+    }
+    foreach ($prodsCarretillaNAutorizada as $producto) {
+        if (isset($productosCurados[$producto["id_producto"]])) {
+            $productosCurados[$producto["id_producto"]]["stock"] -= $producto["reserved"];
+        }
+    }
+
+    return $productosCurados[$productId];
+}
 
     //Function para agregar un producto a la carretilla anónima
     //Si el producto ya existe, se actualiza la cantidad

@@ -13,9 +13,6 @@ use Utilities\Cart\CartFns;
 use Utilities\Site;
 use Utilities\Security;
 
-
-
-
 class Tienda extends PublicController
 {
     private $partialName = "";
@@ -46,8 +43,6 @@ class Tienda extends PublicController
             $this->selectedBrand !== "" ? [$this->selectedBrand] : [],
             $this->selectedCategory !== "" ? [$this->selectedCategory] : []
         );
-
-
 
         $this->products = $tmpProducts["products"];
         $this->productsCount = $tmpProducts["total"];
