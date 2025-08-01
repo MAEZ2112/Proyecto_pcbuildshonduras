@@ -100,6 +100,21 @@ class Security extends \Dao\Table
         return self::obtenerUnRegistro($sqlstr, $params);
     }
 
+    //Validar que al registrar no se pueda acceder con un email o nombre que ya está registrado
+    public static function correoExiste(string $email): bool {
+    $sql = "SELECT COUNT(*) AS total FROM usuario WHERE useremail = :email";
+    $params = ["email" => $email];
+    $result = self::obtenerUnRegistro($sql, $params);
+    return $result && $result["total"] > 0;
+}
+
+      public static function nombreExiste(string $username): bool {
+    $sql = "SELECT COUNT(*) AS total FROM usuario WHERE username = :username";
+    $params = ["username" => $username];
+    $result = self::obtenerUnRegistro($sql, $params);
+    return $result && $result["total"] > 0;
+}
+
     static private function _saltPassword($password)
     {
         return hash_hmac(
@@ -112,6 +127,11 @@ class Security extends \Dao\Table
     static private function _hashPassword($password)
     {
         return password_hash(self::_saltPassword($password), PASSWORD_ALGORITHM);
+    }
+//utilizar el haspassword
+    public static function preparePasswordForStorage(string $password): string
+    {
+        return self::_hashPassword($password);
     }
 
     static public function verifyPassword($raw_password, $hash_password)
@@ -263,6 +283,19 @@ class Security extends \Dao\Table
     private function __clone()
     {
     }
+
+
+    public static function updatePassword($usercod, $hashedPassword) {
+    $sql = "UPDATE usuario 
+            SET userpswd = :pswd, 
+                userpswdchg = NOW(), 
+                userpswdexp = DATE_ADD(NOW(), INTERVAL 90 DAY) 
+            WHERE usercod = :usercod";
+    return self::executeNonQuery($sql, [
+        "pswd" => $hashedPassword,
+        "usercod" => $usercod
+    ]);
+}
 }
 
 

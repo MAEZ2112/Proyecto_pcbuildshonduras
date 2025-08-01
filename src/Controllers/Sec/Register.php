@@ -4,6 +4,7 @@ namespace Controllers\Sec;
 
 use Controllers\PublicController;
 use \Utilities\Validators;
+use Dao\Security\Security;
 use Exception;
 
 class Register extends PublicController
@@ -31,7 +32,16 @@ class Register extends PublicController
                 $this->errorPswd = "La contraseña debe tener al menos 8 caracteres una mayúscula, un número y un caracter especial.";
                 $this->hasErrors = true;
             }
+            //VALIDACIÓN DE EXISTENTES
+            if (Security::correoExiste($this->txtEmail)) {
+                $this->errorEmail = "Este correo ya está registrado";
+                $this->hasErrors = true;
+            }
 
+            if (Security::nombreExiste($this->txtUser)) {
+                $this->errorUser = "Este nombre de usuario ya está en uso";
+                $this->hasErrors = true;
+            }
             if (!$this->hasErrors) {
                 try{
                     if (\Dao\Security\Security::newUsuario($this->txtEmail, $this->txtUser, $this->txtPswd)) {
