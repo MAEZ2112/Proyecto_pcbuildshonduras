@@ -144,14 +144,22 @@ class Usuario extends PrivateController
         if (Validators::IsEmpty($v["username"])) $this->innerError("username", "Nombre requerido");
 
         if ($v["mode"] === "INS") {
-    
-    if (Validators::IsEmpty($v["userpswd"])) {
-        $this->innerError("userpswd", "Contraseña requerida");
-    } elseif (!Validators::IsValidPassword($v["userpswd"])) {
-        $this->innerError("userpswd", "Contraseña débil: debe tener mayúscula, minúscula, número y carácter especial");
-    }
-}
+            if (Validators::IsEmpty($v["userpswd"])) {
+                $this->innerError("userpswd", "Contraseña requerida");
+            } elseif (!Validators::IsValidPassword($v["userpswd"])) {
+                $this->innerError("userpswd", "Contraseña débil: debe tener mayúscula, minúscula, número y carácter especial");
+            }
+            // Validar duplicado de email
+            if (UsuariosDAO::existsEmail($v["useremail"])) {
+                $this->innerError("useremail", "Este correo ya está registrado.");
+            }
+        }
 
+        if ($v["mode"] === "UPD") {
+            if (UsuariosDAO::existsEmailForOtherUser($v["useremail"], $v["usercod"])) {
+                $this->innerError("useremail", "Este correo ya está en uso por otro usuario.");
+            }
+        }
         if (!in_array($v["userest"], $this->userStates)) $this->innerError("userest", "Estado inválido");
         if (!in_array($v["usertipo"], $this->userTypes)) $this->innerError("usertipo", "Tipo de usuario inválido");
 
@@ -230,6 +238,23 @@ class Usuario extends PrivateController
         $this->viewData["xsrtoken"] = hash("sha256", json_encode($this->viewData));
         $_SESSION[$this->name . "-xsrtoken"] = $this->viewData["xsrtoken"];
 
+       // Control de campos editables y contraseña
+        if ($this->viewData["mode"] === "INS") {
+            $this->viewData["readonly"] = ""; // Todos los campos editables
+            $this->viewData["userpswd_readonly"] = ""; // Contraseña editable
+            // Si hubo errores, no sobrescribas la contraseña
+            if (!isset($this->viewData["userpswd_error"])) {
+                $this->viewData["userpswd"] = "";
+            }
+        } elseif ($this->viewData["mode"] === "UPD") {
+            $this->viewData["readonly"] = ""; // Todos los campos editables
+            $this->viewData["userpswd"] = "********"; // Mostrar como bloqueada
+            $this->viewData["userpswd_readonly"] = "readonly"; // Contraseña bloqueada
+        } elseif (in_array($this->viewData["mode"], ["DSP", "DEL"])) {
+            $this->viewData["readonly"] = "readonly"; // Todos los campos bloqueados
+            $this->viewData["userpswd"] = "********";
+            $this->viewData["userpswd_readonly"] = "readonly";
+        }
         foreach ($this->userTypes as $tipo) {
             // Normaliza el valor para la clave (ej. "Administrador" → "Administrador", "Cliente" → "Cliente")
             $key = "usertipo_" . strtoupper(substr($tipo, 0, 3)); // ADM, CLI

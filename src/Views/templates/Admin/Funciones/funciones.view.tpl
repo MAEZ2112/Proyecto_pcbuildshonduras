@@ -33,7 +33,7 @@
         {{if isNewEnabled}}
         <div class="col-4 align-end">
           <button type="button" onclick="window.location.href='index.php?page=Admin-Funciones-Funcion&mode=INS'" class="btn btn-primary">
-            Agregar nueva función
+            Agregar nuevo Permiso
           </button>
         </div>
         {{endif isNewEnabled}}
