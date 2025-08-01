@@ -94,31 +94,56 @@ class RolesUsuarios extends Table {
              VALUES
               (:usercod, :rolescod, :roleuserest, :roleuserfch, :roleuserexp)";
   $params = compact("usercod", "rolescod", "roleuserest", "roleuserfch", "roleuserexp");
-  return self::executeNonQuery($sqlstr, $params);
+  $result = self::executeNonQuery($sqlstr, $params);
+
+  // Actualizar tipo de usuario según rol
+  if ($rolescod === "ADMIN" || $rolescod === "PBL") {
+  self::actualizarTipoUsuario($usercod, $rolescod);
+}
+  return $result;
 }
 
-  public static function updateRolUsuario(
-  string $usercod,
-  string $rolescod,
-  string $roleuserest,
-  ?string $roleuserfch = null,
-  ?string $roleuserexp = null
-) {
-  $sqlstr = "UPDATE roles_usuarios SET
-               roleuserest = :roleuserest,
-               roleuserfch = :roleuserfch,
-               roleuserexp = :roleuserexp
-             WHERE usercod = :usercod AND rolescod = :rolescod";
-  $params = compact("usercod", "rolescod", "roleuserest", "roleuserfch", "roleuserexp");
-  return self::executeNonQuery($sqlstr, $params);
-}
 
-  public static function deleteRolUsuario(string $usercod, string $rolescod) {
+public static function cambiarRolUsuario(
+    string $usercod,
+    string $rolescodActual,
+    string $rolescodNuevo,
+    string $roleuserest,
+    ?string $roleuserfch = null,
+    ?string $roleuserexp = null
+  ) {
+    // Si el rol no cambió, solo actualizá los demás campos
+    if ($rolescodActual === $rolescodNuevo) {
+      return self::updateRolUsuario($usercod, $rolescodActual, $roleuserest, $roleuserfch, $roleuserexp);
+    }
+
+    // Eliminar el rol anterior
+    self::deleteRolUsuario($usercod, $rolescodActual);
+
+    // Verificar que no exista el nuevo antes de insertar
+    if (self::getRolUsuarioByIds($usercod, $rolescodNuevo)) {
+      return 0; // Ya existe, no lo insertes
+    }
+
+    // Insertar el nuevo rol
+    return self::insertRolUsuario($usercod, $rolescodNuevo, $roleuserest, $roleuserfch, $roleuserexp);
+  }
+
+ public static function deleteRolUsuario(string $usercod, string $rolescod) {
     $sqlstr = "DELETE FROM roles_usuarios
                WHERE usercod = :usercod AND rolescod = :rolescod";
     $params = compact("usercod", "rolescod");
-    return self::executeNonQuery($sqlstr, $params);
-  }
+    $result = self::executeNonQuery($sqlstr, $params);
+
+    // Verificar si el usuario tiene otros roles
+    $rolesRestantes = self::getRolesByUser($usercod);
+
+    if (empty($rolesRestantes)) {
+        // Si no tiene más roles, actualizar tipo a 'N/A' o algo neutral
+        self::actualizarTipoUsuario($usercod, "PBL");
+    }
+    return $result;
+}
 
     // Devuelve lista de todos los roles disponibles
   public static function getRoles() {
@@ -130,5 +155,16 @@ class RolesUsuarios extends Table {
   public static function getUsuarios() {
     $sqlstr = "SELECT usercod, username FROM usuario WHERE userest != 'INA'";
     return self::obtenerRegistros($sqlstr, []);
+}
+
+public static function actualizarTipoUsuario(string $usercod, string $usertipo) {
+  $sqlstr = "UPDATE usuario SET usertipo = :usertipo WHERE usercod = :usercod";
+  $params = compact("usercod", "usertipo");
+  return self::executeNonQuery($sqlstr, $params);
+}
+
+public static function getRolesByUser(string $usercod): array {
+    $sqlstr = "SELECT rolescod FROM roles_usuarios WHERE usercod = :usercod";
+    return self::obtenerRegistros($sqlstr, ["usercod" => $usercod]);
 }
 }
