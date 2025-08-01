@@ -42,7 +42,7 @@
         <input type="password" name="userpswd" id="userpswd"
           value="{{userpswd}}" class="col-12 col-m-8 col-l-9" />
         {{if userpswd_error}}<div class="error col-12">{{userpswd_error}}</div>{{endif userpswd_error}}
-      </div>
+    </div>
    
 
     <!-- Fecha de ingreso -->
@@ -56,8 +56,8 @@
     <div class="row my-2">
       <label for="usertipo" class="col-12 col-m-4 col-l-3">Tipo de usuario:</label>
       <select name="usertipo" id="usertipo" class="col-12 col-m-8 col-l-9" {{~readonly}}>
-        <option value="Administrador" {{usertipo_CON}}>Administrador</option>
-        <option value="Cliente" {{usertipo_CLI}}>Cliente</option>
+        <option value="ADMIN" {{usertipo_ADMIN}}>Administrador</option>
+        <option value="PBL" {{usertipo_PBL}}>Cliente</option>
       </select>
     </div>
 

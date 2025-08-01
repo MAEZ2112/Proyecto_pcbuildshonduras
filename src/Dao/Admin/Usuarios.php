@@ -131,9 +131,8 @@ class Usuarios extends Table
     public static function getTiposUsuario()
     {
         return [
-            ["code" => "ADM", "description" => "Administrador"],
-            ["code" => "CNS", "description" => "Consultor"],
-            ["code" => "CLT", "description" => "Cliente"]
+            ["code" => "ADMIN", "description" => "Administrador"],
+            ["code" => "PBL", "description" => "Cliente"]
         ];
     }
 

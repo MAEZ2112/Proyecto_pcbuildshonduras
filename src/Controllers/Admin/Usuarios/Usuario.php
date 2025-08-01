@@ -41,7 +41,7 @@ class Usuario extends PrivateController
             "DSP" => "Detalle del Usuario: %s"
         ];
 
-        $this->userTypes = ["Administrador", "Cliente"];
+        $this->userTypes = ["ADMIN", "PBL"];
         $this->userStates = ["ACT", "INA", "BLQ"];
     }
 
@@ -229,5 +229,17 @@ class Usuario extends PrivateController
 
         $this->viewData["xsrtoken"] = hash("sha256", json_encode($this->viewData));
         $_SESSION[$this->name . "-xsrtoken"] = $this->viewData["xsrtoken"];
+
+        foreach ($this->userTypes as $tipo) {
+            // Normaliza el valor para la clave (ej. "Administrador" → "Administrador", "Cliente" → "Cliente")
+            $key = "usertipo_" . strtoupper(substr($tipo, 0, 3)); // ADM, CLI
+            $this->viewData[$key] = ($this->viewData["usertipo"] === $tipo) ? "selected" : "";
+        }
+
+        // Generar variables de selección para estado de usuario
+        foreach ($this->userStates as $estado) {
+            $key = "userest_" . $estado; // ACT, INA, BLQ
+            $this->viewData[$key] = ($this->viewData["userest"] === $estado) ? "selected" : "";
+        }
     }
 }
