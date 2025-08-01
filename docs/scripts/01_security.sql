@@ -129,7 +129,10 @@ INSERT INTO funciones (fncod, fndsc, fnest, fntyp) VALUES
 ('Menu_PaymentCheckout', 'Entrada del menú para checkout de pagos', 'ACT', 'MNU'),
 ('Menu_Admin_Envios', 'Manejo de Envios', 'ACT', 'MENU'),
 ('Menu_Admin_Pedidos', 'Manejo de Pedidos', 'ACT', 'MENU'),
-('Menu_TransHist', 'Entrada del menú para historial de transacciones', 'ACT', 'MNU');
+('Menu_TransHist', 'Entrada del menú para historial de transacciones', 'ACT', 'MNU')
+('Menu_Admin_Transactions', 'Entrada del menú para historial de transacciones', 'ACT', 'MNU'),
+('Controllers\\Admin\\Transactions\\Transaction', 'Acceso al controlador de Transacción', 'ACT', 'CTR'),
+('Controllers\\Admin\\Transactions\\Transactions', 'Permiso para ver listado de Transacciones', 'ACT', 'CTR');
 
 INSERT INTO
     `roles` (
@@ -205,11 +208,13 @@ INSERT INTO funciones_roles (rolescod, fncod, fnrolest, fnexp) VALUES
 ('ADMIN', 'Menu_Admin_Envios', 'ACT', '2025-10-10 00:00:00'),
 ('ADMIN', 'Menu_Admin_Pedidos', 'ACT', '2025-10-10 00:00:00'),
 ('ADMIN', 'Menu_TransHist', 'ACT', '2025-10-10 00:00:00'),
-
 ('PBL', 'Controllers\\Checkout\\Checkout', 'ACT', '2026-07-27 03:14:24'),
 ('PBL', 'Controllers\\Checkout\\History', 'ACT', '2026-07-27 03:14:24'),
 ('PBL', 'Controllers\\Checkout\\HistoryDetail', 'ACT', '2026-07-27 03:14:24'),
-('PBL', 'Controllers\\Checkout\\Checkout', 'ACT', '2026-07-27 03:14:24');
+('PBL', 'Controllers\\Checkout\\Checkout', 'ACT', '2026-07-27 03:14:24')
+('PBL', 'Controllers\\Checkout\\Checkout', 'ACT', '2026-07-27 03:14:24'),
+('ADMIN', 'Controllers\\Admin\\Transactions\\Transaction', 'ACT', '2025-10-10 00:00:00'),
+('ADMIN', 'Controllers\\Admin\\Transactions\\Transactions', 'ACT', '2025-10-10 00:00:00');
 
 INSERT into usuario
 (usercod, useremail, username, userpswd, userfching, userpswdest, userpswdexp, userest, useractcod, userpswdchg, usertipo)

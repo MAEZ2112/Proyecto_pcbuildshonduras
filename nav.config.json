@@ -78,6 +78,11 @@
       "id":"Menu_Admin_Marcas",
       "nav_url": "index.php?page=Admin-Marcas-Marcas",
       "nav_label": "Gestión de marcas"
+    },
+    {
+      "id":"Menu_Admin_Transactions",
+      "nav_url": "index.php?page=Admin-Transactions-Transactions",
+      "nav_label": "Historial de transacciones"
     }
   ]
 }
