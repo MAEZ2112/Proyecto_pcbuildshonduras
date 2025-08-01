@@ -28,10 +28,16 @@
   ],
   "private": [
      {
-      "id": "Menu_Pedidos",
-      "nav_url": "index.php?page=Pedidos_Pedidos",
-      "nav_label": "<i class=\"fas fa-file-invoice-dollar\"></i>&nbsp;Pedidos"
+      "id": "Menu_Admin_Pedidos",
+      "nav_url": "index.php?page=Admin_Orders_Pedidos",
+      "nav_label": "<i class=\"fas fa-file-invoice-dollar\"></i>&nbsp;Manejo de Pedidos"
     }, 
+    {
+      "id": "Menu_Admin_Envios",
+      "nav_url": "index.php?page=Admin_Orders_Envios",
+      "nav_label": "<i class=\"fa-solid fa-truck-fast\"></i>&nbsp;Manejo de Envios"
+    },
+
      {
       "id":"Menu_Admin_Usuarios",
       "nav_url": "index.php?page=Admin-Usuarios-Usuarios",
