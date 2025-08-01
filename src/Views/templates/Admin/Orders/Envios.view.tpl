@@ -37,25 +37,19 @@
     </div>
 </div>
 <script>
-    document.addEventListener('DOMContentLoaded', () => {
-
-        const tabs = document.querySelectorAll('.tab');
-        const rows = document.querySelectorAll('#orderTable tr');
-
-        tabs.forEach(tab => {
-            tab.addEventListener('click', () => {
-                tabs.forEach(t => t.classList.remove('active'));
-                tab.classList.add('active');
-                const status = tab.dataset.status;
-                console.log('Filtrando por:', status);
-                rows.forEach(row => {
-                    console.log('Estado actual:', row.dataset.status);
-                    row.style.display = (row.dataset.status === status) ? '' : 'none';
-                });
-            });
-        });
-
-        // Activar el primer tab (PENDING) al cargar
-        tabs[0].click();
+  document.addEventListener('DOMContentLoaded', () => {
+    const tabs = document.querySelectorAll('.tab');
+    const rows = document.querySelectorAll('#orderTable tr');
+    tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      const status = tab.dataset.status;
+      rows.forEach(row => {
+        row.style.display = (row.dataset.status === status) ? '' : 'none';
+      });
     });
+  });
+  tabs[0].click();
+  });
 </script>

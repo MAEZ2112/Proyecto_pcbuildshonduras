@@ -69,44 +69,55 @@
 
 
 <style>
-    .order-table {
-        border-collapse: collapse;
-        background: #fff;
-        border-radius: 8px;
-        overflow: hidden;
-        box-shadow: 0px 2px 8px rgba(0,0,0,0.05);
+    :root {
+        --primary-morado: #6c3bbf;
+        --secondary-morado: #a084e8;
+        --accent-morado: #d1b3ff;
+        --table-bg: #f8f6fc;
+        --table-header-bg: #ede7f6;
+        --table-row-hover: #f3eaff;
+        --table-border: #c1a6e6;
+        --text-main: #3d2352;
+        --text-light: #7c5ca7;
     }
 
-    /* Encabezado */
+    .order-table {
+        border-collapse: collapse;
+        background: var(--table-bg);
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 16px rgba(108, 59, 191, 0.08);
+        width: 100%;
+        font-family: 'Segoe UI', 'Arial', sans-serif;
+    }
+
     .order-table thead {
-        background: #f5f5f5;
+        background: var(--table-header-bg);
     }
 
     .order-table th {
-        padding: 12px;
-        font-weight: 600;
-        font-size: 14px;
-        text-align: left;
-        color: #333;
-        border-bottom: 2px solid #e0e0e0;
-        font-weight: bold;
+        padding: 14px 16px;
+        font-weight: 700;
         font-size: 18px;
+        text-align: left;
+        color: var(--primary-morado);
+        border-bottom: 2px solid var(--table-border);
+        letter-spacing: 0.5px;
     }
 
-    /* Filas */
     .order-table td {
-        padding: 10px 12px;
+        padding: 12px 16px;
         font-size: 16px;
-        color: rgb(59, 56, 56);
-        border-bottom: 1px solid #eee;
+        color: var(--text-main);
+        border-bottom: 1px solid var(--table-border);
+        background: transparent;
+        transition: background 0.2s;
     }
 
-    /* Zebra striping */
     .order-table tbody tr:nth-child(even) {
-        background: #fafafa;
+        background: var(--accent-morado);
     }
 
-    /* Alineaciones */
     .order-table .center {
         text-align: center;
     }
@@ -115,10 +126,17 @@
         text-align: right;
     }
 
-    /* Hover fila */
     .order-table tbody tr:hover {
-        background: #f0f8ff;
+        background: var(--table-row-hover);
         transition: background 0.2s;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .order-table th, .order-table td {
+            font-size: 15px;
+            padding: 10px 8px;
+        }
     }
 </style>
 
