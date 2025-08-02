@@ -88,4 +88,9 @@ class Funciones extends Table {
     $row = self::obtenerUnRegistro($sql, $params);
     return intval($row["total"] ?? 0);
   }
+
+  public static function getAllFunciones() {
+  $sqlstr = "SELECT fncod, fndsc, fnest, fntyp FROM funciones";
+  return ["funciones" => self::obtenerRegistros($sqlstr, [])];
+}
 }

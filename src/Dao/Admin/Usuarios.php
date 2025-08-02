@@ -149,4 +149,21 @@ class Usuarios extends Table
         $sqlstr = "SELECT usercod, username FROM usuario ORDER BY username";
         return self::obtenerRegistros($sqlstr, []);
     }
+
+   public static function existsEmail(string $email): bool
+    {
+        $sqlstr = "SELECT COUNT(*) as count FROM usuario WHERE useremail = :email";
+        $params = ["email" => $email];
+        $result = self::obtenerUnRegistro($sqlstr, $params);
+        return $result[" count"] > 0;
+    }
+
+    public static function existsEmailForOtherUser(string $email, int $usercod): bool
+    {
+        $sqlstr = "SELECT COUNT(*) as count FROM usuario WHERE useremail = :email AND usercod != :usercod";
+        $params = ["email" => $email, "usercod" => $usercod];
+        $result = self::obtenerUnRegistro($sqlstr, $params);
+        return $result["count"] > 0;
+    }
+
 }

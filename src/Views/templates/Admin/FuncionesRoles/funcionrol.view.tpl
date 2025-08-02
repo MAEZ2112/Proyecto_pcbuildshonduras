@@ -54,11 +54,17 @@
     </div>
 
     <!-- Fecha de expiración -->
-    <div class="row my-2">
-      <label for="fnexp" placeholder="YYYY-MM-DD" class="col-12 col-m-4 col-l-3">Expira:</label>
-      <input type="text" name="fnexp" id="fnexp" value="{{fnexp}}" class="col-12 col-m-8 col-l-9" {{~readonly}} />
-    </div>
+      <div class="row my-2">
+        <label for="fnexp" placeholder="YYYY-MM-DD" class="col-12 col-m-4 col-l-3">Expira:</label>
+        <input type="text" name="fnexp" id="fnexp"
+              value="{{fnexp}}"
+              class="col-12 col-m-8 col-l-9 {{if fnexp_error}}is-invalid{{endif fnexp_error}}"
+              {{~readonly}} />
 
+        {{if fnexp_error}}
+          <div class="error col-12 text-danger small mt-1">{{fnexp_error}}</div>
+        {{endif fnexp_error}}
+      </div>
     <!-- Tokens -->
     <input type="hidden" name="xsrtoken" value="{{xsrtoken}}" />
 

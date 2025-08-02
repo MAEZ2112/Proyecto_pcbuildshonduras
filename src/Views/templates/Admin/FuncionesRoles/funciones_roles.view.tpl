@@ -1,4 +1,4 @@
-<h1>Funciones por Rol</h1>
+<h1>Permisos por Rol</h1>
 <section class="grid">
   <div class="row">
     <form class="col-12 col-m-8" action="index.php" method="get">
@@ -23,7 +23,7 @@
         {{if isNewEnabled}}
             <div class="col-4 align-end">
               <button type="button" onclick="window.location.href='index.php?page=Admin_FuncionesRoles_FuncionesRol&mode=INS'" class="btn btn-primary">
-                Asignar función a un rol
+                Asignar permiso a un rol
               </button>
             </div>
           {{endif isNewEnabled}}

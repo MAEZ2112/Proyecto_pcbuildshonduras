@@ -35,10 +35,10 @@ class FuncionesRol extends PrivateController
             "errors" => []
         ];
         $this->modeNames = [
-            "INS" => "Asignar nueva función",
-            "UPD" => "Editar asignación para función: %s",
-            "DEL" => "Eliminar asignación de función: %s",
-            "DSP" => "Detalle de función asignada: %s"
+            "INS" => "Asignar un Permiso al rol",
+            "UPD" => "Editar asignación del permiso: %s",
+            "DEL" => "Eliminar asignación de permiso: %s",
+            "DSP" => "Detalle del permiso asignado: %s"
         ];
     }
 
@@ -122,27 +122,24 @@ class FuncionesRol extends PrivateController
         if (Validators::IsEmpty($this->viewData["fncod"])) {
             $this->viewData["errors"]["fncod"][] = "Función requerida";
         }
-        if (!in_array($this->viewData["fnrolest"], $this->estadoAsignacion)) {
-            $this->viewData["errors"]["fnrolest"][] = "Estado asignación inválido";
+        if (Validators::IsEmpty($this->viewData["fnexp"])) {
+            $this->viewData["errors"]["fnexp"][] = "La fecha de expiración es requerida";
+        } else {
+            $fechaTexto = trim($this->viewData["fnexp"]);
+
+            if (!preg_match("/^\d{4}-\d{2}-\d{2}$/", $fechaTexto)) {
+                $this->viewData["errors"]["fnexp"][] = "Formato inválido. Usa YYYY-MM-DD";
+            } else {
+                $expDate = strtotime($fechaTexto);
+                $today = strtotime(date("Y-m-d"));
+
+                if (!$expDate) {
+                    $this->viewData["errors"]["fnexp"][] = "Fecha inválida";
+                } elseif ($expDate < $today) {
+                    $this->viewData["errors"]["fnexp"][] = "La fecha de expiración debe ser futura";
+                }
+            }
         }
-        
-      if (!empty($this->viewData["fnexp"])) {
-    $fechaTexto = trim($this->viewData["fnexp"]);
-
-    if (!preg_match("/^\d{4}-\d{2}-\d{2}$/", $fechaTexto)) {
-        $this->viewData["errors"]["fnexp"][] = "Formato inválido. Usa YYYY-MM-DD";
-    } else {
-        $expDate = strtotime($fechaTexto);
-        $today = strtotime(date("Y-m-d"));
-
-        if (!$expDate) {
-            $this->viewData["errors"]["fnexp"][] = "Fecha inválida";
-        } elseif ($expDate < $today) {
-            $this->viewData["errors"]["fnexp"][] = "La fecha de expiración debe ser futura";
-        }
-    }
-
-}
 
         return count($this->viewData["errors"]) === 0;
     }
@@ -190,8 +187,7 @@ private function prepareViewData(): void
         $v["funciones_list"] = array_map(function ($fn) {
             $fn["selected"] = ($fn["fncod"] === $this->viewData["fncod"]) ? "selected" : "";
             return $fn;
-        }, Funciones::getFunciones()["funciones"]);
-
+        }, Funciones::getAllFunciones()["funciones"]);
 
         $v["fnrolest_ACT"] = $v["fnrolest"] === "ACT" ? "selected" : "";
         $v["fnrolest_INA"] = $v["fnrolest"] === "INA" ? "selected" : "";
@@ -200,6 +196,8 @@ private function prepareViewData(): void
         $v["fntyp_CTR"] = $v["fntyp"] === "CTR" ? "selected" : "";
         $v["fntyp_FNC"] = $v["fntyp"] === "FNC" ? "selected" : "";
         $v["fntyp_ASPI"] = $v["fntyp"] === "ASPI" ? "selected" : "";
+
+        $v["fnexp_error"] = isset($v["errors"]["fnexp"]) ? implode(", ", $v["errors"]["fnexp"]) : "";
 
         $v["timestamp"] = time();
         $v["xsrtoken"] = hash("sha256", json_encode($v));

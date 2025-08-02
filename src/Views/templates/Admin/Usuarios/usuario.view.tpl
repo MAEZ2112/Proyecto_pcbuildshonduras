@@ -40,7 +40,7 @@
     <div class="row my-2">
         <label for="userpswd" class="col-12 col-m-4 col-l-3">Contraseña:</label>
         <input type="password" name="userpswd" id="userpswd"
-          value="{{userpswd}}" class="col-12 col-m-8 col-l-9" />
+  value="{{userpswd}}" {{~userpswd_readonly}} class="col-12 col-m-8 col-l-9" />
         {{if userpswd_error}}<div class="error col-12">{{userpswd_error}}</div>{{endif userpswd_error}}
     </div>
    

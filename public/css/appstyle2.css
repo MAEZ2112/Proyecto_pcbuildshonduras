@@ -879,6 +879,7 @@ header ul li a:hover {
 
 main {
     position: relative;
+    padding: 1em;
     min-height: calc(100vh - 154px)
 }
 
