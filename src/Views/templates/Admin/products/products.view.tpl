@@ -52,7 +52,7 @@
         <td>{{id_producto}}</td>
         <td>{{nombre_producto}}</td>
         <td>{{descripcion}}</td>
-        <td>L {{precio}}</td>
+        <td>USD {{precio}}</td>
         <td>{{stock}}</td>
         <td>{{nombre_categoria}}</td>
         <td>{{nombre_marca}}</td>

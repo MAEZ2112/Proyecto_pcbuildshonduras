@@ -53,7 +53,7 @@
         <td style="text-align:center">{{orderid}}</td>
         <td style="text-align:center">{{transdate}}</td>
         <td style="text-align:center">{{transstatus}}</td>
-        <td style="text-align:center">L {{amount}}</td>
+        <td style="text-align:center">USD {{amount}}</td>
         <td style="text-align:center">{{currency}}</td>
         <td style="text-align: center;">
          
