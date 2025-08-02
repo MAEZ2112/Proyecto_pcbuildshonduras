@@ -37,52 +37,51 @@
       "nav_url": "index.php?page=Admin_Orders_Envios",
       "nav_label": "<i class=\"fa-solid fa-truck-fast\"></i>&nbsp;Manejo de Envios"
     },
-
-     {
+    {
       "id":"Menu_Admin_Usuarios",
       "nav_url": "index.php?page=Admin-Usuarios-Usuarios",
-      "nav_label": "Gestión de usuarios"
+      "nav_label": "<i class=\"fas fa-users\"></i>&nbsp;Gestión de usuarios"
     },
      {
       "id":"Menu_Admin_Roles",
       "nav_url": "index.php?page=Admin-Roles-Roles",
-      "nav_label": "Gestión de roles"
+      "nav_label": "<i class=\"fas fa-user-shield\"></i>&nbsp;Gestión de roles"
     },
      {
       "id":"Menu_Admin_Funciones",
       "nav_url": "index.php?page=Admin-Funciones-Funciones",
-      "nav_label": "Gestión de permisos"
+      "nav_label": "<i class=\"fas fa-key\"></i>&nbsp;Gestión de permisos"
     },
      {
       "id":"Menu_Admin_FuncionesRoles",
       "nav_url": "index.php?page=Admin-FuncionesRoles-FuncionesRoles",
-      "nav_label": "Gestión de permisos por usuario"
+      "nav_label": "<i class=\"fas fa-user-lock\"></i>&nbsp;Gestión de permisos por usuario"
     },
     {
       "id":"Menu_Admin_RolesUsuarios",
       "nav_url": "index.php?page=Admin-RolesUsuarios-RolesUsuario",
-      "nav_label": "Gestión de roles por usuario"
+      "nav_label": "<i class=\"fas fa-user-tag\"></i>&nbsp;Gestión de roles por usuario"
     },
     {
       "id":"Menu_Admin_Products",
       "nav_url": "index.php?page=Admin-Products-Products",
-      "nav_label": "Gestión de productos"
+      "nav_label": "<i class=\"fas fa-boxes-stacked\"></i>&nbsp;Gestión de productos"
     },
    
      {
       "id":"Menu_Admin_Categorias",
       "nav_url": "index.php?page=Admin-Categorias-Categorias",
-      "nav_label": "Gestión de categorias"
+      "nav_label": "<i class=\"fas fa-layer-group\"></i>&nbsp;Gestión de categorias"
     },
      {
       "id":"Menu_Admin_Marcas",
       "nav_url": "index.php?page=Admin-Marcas-Marcas",
-      "nav_label": "Gestión de marcas"
+      "nav_label": "<i class=\"fas fa-trademark\"></i>&nbsp;Gestión de marcas"
     },
     {
       "id":"Menu_Admin_Transactions",
       "nav_url": "index.php?page=Admin-Transactions-Transactions",
-      "nav_label": "Historial de transacciones"
+      "nav_label": "<i class=\"fas fa-receipt\"></i>&nbsp;Historial de transacciones"
     }
   ]
 }
